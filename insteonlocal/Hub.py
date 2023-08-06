@@ -5,7 +5,6 @@ import json
 from collections import OrderedDict
 from time import sleep, time
 from io import StringIO
-import pkg_resources
 import requests
 import os
 import tempfile
@@ -52,13 +51,11 @@ class Hub(object):
 
         self.buffer_status = OrderedDict()
 
-        json_cats = pkg_resources.resource_string(__name__, 'data/device_categories.json')
-        json_cats_str = json_cats.decode('utf-8')
-        self.device_categories = json.loads(json_cats_str)
+        with open(os.path.join(os.path.dirname(__file__), 'data/device_categories.json')) as json_cats:
+            self.device_categories = json.load(json_cats)
 
-        json_models = pkg_resources.resource_string(__name__, 'data/device_models.json')
-        json_models_str = json_models.decode('utf-8')
-        self.device_models = json.loads(json_models_str)
+        with open(os.path.join(os.path.dirname(__file__), 'data/device_models.json')) as json_models:
+            self.device_models = json.load(json_models)
 
         self.hub_url = 'http://' + self.ip_addr + ':' + self.port
 
